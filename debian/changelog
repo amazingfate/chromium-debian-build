@@ -38,6 +38,8 @@ chromium (130.0.6723.58-1~deb12u1) UNRELEASED; urgency=high
     - system/event.patch: drop half of patch due to upstream deletions.
     - upstream/mojo-null.patch: merged into mojo.patch.
     - upstream/mojo.patch: update based on 130 test files.
+    - bookworm/gn-absl.patch: refresh.
+    - bookworm/gn-funcs.patch: refresh.
 
   [ Daniel Richard G. ]
   * d/rules: Drop the clang-16 -I/-Wl,-rpath flags from CXXFLAGS/LDFLAGS as
