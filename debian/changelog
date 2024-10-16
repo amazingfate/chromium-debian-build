@@ -1,3 +1,50 @@
+chromium (130.0.6723.58-1~deb12u1) UNRELEASED; urgency=high
+
+  [ Andres Salomon ]
+  * New upstream stable release.
+    - CVE-2024-9954: Use after free in AI. Reported by DarkNavy.
+    - CVE-2024-9955: Use after free in Web Authentication.
+      Reported by anonymous.
+    - CVE-2024-9956: Inappropriate implementation in Web Authentication.
+      Reported by mastersplinter.
+    - CVE-2024-9957: Use after free in UI. Reported by lime(@limeSec_) and
+      fmyy(@binary_fmyy) From TIANGONG Team of Legendsec at QI-ANXIN Group.
+    - CVE-2024-9958: Inappropriate implementation in PictureInPicture.
+      Reported by Lyra Rebane (rebane2001).
+    - CVE-2024-9959: Use after free in DevTools. Reported by Sakana.S.
+    - CVE-2024-9960: Use after free in Dawn. Reported by Anonymous.
+    - CVE-2024-9961: Use after free in Parcel Tracking. Reported by
+      lime(@limeSec_) and fmyy(@binary_fmyy) From TIANGONG Team of
+      Legendsec at QI-ANXIN Group.
+    - CVE-2024-9962: Inappropriate implementation in Permissions.
+      Reported by Shaheen Fazim.
+    - CVE-2024-9963: Insufficient data validation in Downloads.
+      Reported by Anonymous.
+    - CVE-2024-9964: Inappropriate implementation in Payments.
+      Reported by Hafiizh.
+    - CVE-2024-9965: Insufficient data validation in DevTools.
+      Reported by Shaheen Fazim.
+    - CVE-2024-9966: Inappropriate implementation in Navigations.
+      Reported by Harry Chen.
+  * d/copyright: rollup -> @rollup  deletion.
+  * d/patches:
+    - debianization/sandbox.patch: refresh.
+    - fixes/bindgen.patch: refresh.
+    - disable/catapult.patch: refresh.
+    - system/zlib.patch: drop. Upstream removed courgette, and its
+      replacement (zucchini) doesn't appear to use zlib.
+    - system/rollup.patch: update path due to upstream renaming; call
+      ./rollup/.../rollup instead of ./@rollup/wasm-node/.../rollup.
+    - system/event.patch: drop half of patch due to upstream deletions.
+    - upstream/mojo-null.patch: merged into mojo.patch.
+    - upstream/mojo.patch: update based on 130 test files.
+
+  [ Daniel Richard G. ]
+  * d/rules: Drop the clang-16 -I/-Wl,-rpath flags from CXXFLAGS/LDFLAGS as
+    they are no longer needed.
+
+ -- Andres Salomon <dilinger@debian.org>  Wed, 09 Oct 2024 14:13:00 -0400
+
 chromium (129.0.6668.100-1~deb12u1) bookworm-security; urgency=high
 
   * New upstream security release.

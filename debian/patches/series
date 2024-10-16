@@ -18,7 +18,6 @@ fixes/gpu-crash.patch
 fixes/predictor-denial-of-service.patch
 
 upstream/mojo.patch
-upstream/mojo-null.patch
 upstream/ruy-include.patch
 upstream/wayland-gbm-pixmap.patch
 
@@ -37,7 +36,6 @@ disable/screen-ai-blob.patch
 
 system/icu-shim.patch
 system/jpeg.patch
-system/zlib.patch
 system/event.patch
 system/openjpeg.patch
 system/opus.patch
@@ -45,8 +43,8 @@ system/eu-strip.patch
 system/rapidjson.patch
 system/rollup.patch
 
-bookworm/clang16.patch
 bookworm/libxml-parseerr.patch
+bookworm/clang16.patch
 bookworm/freetype-COLRV1.patch
 bookworm/bubble-contents.patch
 bookworm/sizet.patch
