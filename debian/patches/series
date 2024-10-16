@@ -60,6 +60,7 @@ bookworm/gn-funcs.patch
 bookworm/gn-absl.patch
 bookworm/highway-blink.patch
 bookworm/blink-attrib.patch
+bookworm/cacheline.patch
 
 # Ungoogled Chromium
 ungoogled/disable-privacy-sandbox.patch
