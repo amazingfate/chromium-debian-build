@@ -42,6 +42,7 @@ chromium (130.0.6723.58-1~deb12u1) UNRELEASED; urgency=high
     - bookworm/gn-funcs.patch: refresh.
     - bookworm/cacheline.patch: add patch to revert usage of
       std::hardware_destructive_interference_size, which clang-16 lacks.
+    - upstream/stack-header.patch: add missing include.
 
   [ Daniel Richard G. ]
   * d/rules: Drop the clang-16 -I/-Wl,-rpath flags from CXXFLAGS/LDFLAGS as
