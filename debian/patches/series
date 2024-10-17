@@ -57,6 +57,7 @@ bookworm/spaceship-operator.patch
 bookworm/more-spaceships.patch
 bookworm/signer-lambda.patch
 bookworm/constexpr.patch
+bookworm/constexpr2.patch
 bookworm/gn-funcs.patch
 bookworm/gn-absl.patch
 bookworm/highway-blink.patch
