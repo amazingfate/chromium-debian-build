@@ -1,4 +1,4 @@
-chromium (130.0.6723.58-1~deb12u1) UNRELEASED; urgency=high
+chromium (130.0.6723.58-1~deb12u1) bookworm-security; urgency=high
 
   [ Andres Salomon ]
   * New upstream stable release.
@@ -50,7 +50,27 @@ chromium (130.0.6723.58-1~deb12u1) UNRELEASED; urgency=high
   * d/rules: Drop the clang-16 -I/-Wl,-rpath flags from CXXFLAGS/LDFLAGS as
     they are no longer needed.
 
- -- Andres Salomon <dilinger@debian.org>  Wed, 09 Oct 2024 14:13:00 -0400
+  [ Timothy Pearson ]
+  * d/patches:
+    - upstream/blink-fix-size-assertions.patch: Fix build on non-amd64
+      platforms
+    - fixes/fix-assert-in-vnc-sessions.patch: Fix assertion and SIGTRAP
+      when starting Chromium from within a VNC session
+  * d/patches/ppc64le:
+    - core/add-ppc64-pthread-stack-size.patch: Define correct pthread
+      stack size on ppc64 systems
+    - core/cargo-add-ppc64.diff
+    - third_party/0001-Add-PPC64-support-for-boringssl.patch: Refresh for
+      upstream changes
+    - third_party/0001-Force-baseline-POWER8-AltiVec-VSX-CPU-features-when-
+      .patch: Refresh for upstream changes
+    - third_party/0002-third_party-libvpx-Remove-bad-ppc64-config.patch:
+      Refresh for upstream changes
+    - third_party/skia-vsx-instructions.patch: Refresh for upstream changes
+    - workarounds/HACK-debian-clang-disable-skia-musttail.patch: Refresh
+      for upstream changes
+
+ -- Andres Salomon <dilinger@debian.org>  Sat, 19 Oct 2024 01:12:11 -0400
 
 chromium (129.0.6668.100-1~deb12u1) bookworm-security; urgency=high
 
