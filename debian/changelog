@@ -1,3 +1,11 @@
+chromium (130.0.6723.58-1~deb12u2) UNRELEASED; urgency=low
+
+  * d/patches:
+    - bookworm/partially-deployed-mseal-syscall.patch: Work around newly
+      introduced `mseal` syscall being inconsistently available on Bookworm kernels
+
+ -- Timothy Pearson <tpearson@raptorengineering.com>  Sun, 20 Oct 2024 11:40:00 -0600
+
 chromium (130.0.6723.58-1~deb12u1) bookworm-security; urgency=high
 
   [ Andres Salomon ]
