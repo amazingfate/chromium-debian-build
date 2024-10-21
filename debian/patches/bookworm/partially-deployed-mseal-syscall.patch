@@ -1,6 +1,8 @@
---- a/sandbox/linux/seccomp-bpf-helpers/syscall_sets.cc
-+++ b/sandbox/linux/seccomp-bpf-helpers/syscall_sets.cc
-@@ -548,8 +548,10 @@
+Index: chromium-130.0.6723.58/sandbox/linux/seccomp-bpf-helpers/syscall_sets.cc
+===================================================================
+--- chromium-130.0.6723.58.orig/sandbox/linux/seccomp-bpf-helpers/syscall_sets.cc
++++ chromium-130.0.6723.58/sandbox/linux/seccomp-bpf-helpers/syscall_sets.cc
+@@ -548,7 +548,10 @@ bool SyscallSets::IsAllowedAddressSpaceA
      case __NR_mlock:
      case __NR_munlock:
      case __NR_munmap:
