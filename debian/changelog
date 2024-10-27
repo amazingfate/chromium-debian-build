@@ -1,10 +1,20 @@
-chromium (130.0.6723.58-1~deb12u2) UNRELEASED; urgency=low
+chromium (130.0.6723.69-1~deb12u1) bookworm-security; urgency=high
 
+  [ Andres Salomon ]
+  * New upstream security release.
+    - CVE-2024-10229: Inappropriate implementation in Extensions.
+      Reported by Vsevolod Kokorin (Slonser) of Solidlab.
+    - CVE-2024-10230: Type Confusion in V8.
+      Reported by Seunghyun Lee (@0x10n).
+    - CVE-2024-10231: Type Confusion in V8.
+      Reported by Seunghyun Lee (@0x10n).
+
+  [ Timothy Pearson ]
   * d/patches:
     - bookworm/partially-deployed-mseal-syscall.patch: Work around newly
       introduced `mseal` syscall being inconsistently available on Bookworm kernels
 
- -- Timothy Pearson <tpearson@raptorengineering.com>  Sun, 20 Oct 2024 11:40:00 -0600
+ -- Andres Salomon <dilinger@debian.org>  Tue, 22 Oct 2024 21:34:57 -0400
 
 chromium (130.0.6723.58-1~deb12u1) bookworm-security; urgency=high
 
