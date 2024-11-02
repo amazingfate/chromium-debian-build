@@ -1,3 +1,13 @@
+chromium (130.0.6723.91-1~deb12u1) bookworm-security; urgency=high
+
+  * New upstream security release.
+    - CVE-2024-10487: Out of bounds write in Dawn.
+      Reported by Apple Security Engineering and Architecture (SEAR).
+    - CVE-2024-10488: Use after free in WebRTC.
+      Reported by Cassidy Kim(@cassidy6564).
+
+ -- Andres Salomon <dilinger@debian.org>  Tue, 29 Oct 2024 20:36:38 -0400
+
 chromium (130.0.6723.69-1~deb12u1) bookworm-security; urgency=high
 
   [ Andres Salomon ]
