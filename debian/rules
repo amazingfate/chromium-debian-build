@@ -68,10 +68,10 @@ ifeq (amd64,$(DEB_HOST_ARCH))
 defines+=host_cpu=\"x64\" use_vaapi=true
 endif
 ifeq (arm64,$(DEB_HOST_ARCH))
-defines+=host_cpu=\"arm64\" use_v4l2_codec=true use_vaapi=false
+defines+=host_cpu=\"arm64\" use_v4l2_codec=true use_vaapi=false use_v4lplugin=true
 endif
 ifeq (armhf,$(DEB_HOST_ARCH))
-defines+=host_cpu=\"arm\" use_v4l2_codec=true use_vaapi=false arm_use_neon=true
+defines+=host_cpu=\"arm\" use_v4l2_codec=true use_vaapi=false arm_use_neon=true use_v4lplugin=true
 endif
 
 # thin lto requires >4 GB RAM, so avoid it on 32-bit architectures
