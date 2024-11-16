@@ -14,3 +14,6 @@ export CHROMIUM_FLAGS="$CHROMIUM_FLAGS --disable-pings"
 
 # Disable the builtin media router (bug #833477)
 export CHROMIUM_FLAGS="$CHROMIUM_FLAGS --media-router=0"
+
+# Use ozone wayland for vpu decoding
+export CHROMIUM_FLAGS="$CHROMIUM_FLAGS --ozone-platform-hint=wayland"
