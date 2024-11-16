@@ -1,0 +1,85 @@
+From 2454ad3d9ba69bd71407a75af668b0441d2ef18a Mon Sep 17 00:00:00 2001
+From: Jianfeng Liu <liujianfeng1994@gmail.com>
+Date: Fri, 15 Nov 2024 20:54:29 +0800
+Subject: [PATCH 19/20] media: enable NV12 direct rendering
+
+---
+ .../services/gpu_mojo_media_client_linux.cc   | 39 +++----------------
+ ui/gfx/linux/gbm_wrapper.cc                   |  2 +
+ 2 files changed, 7 insertions(+), 34 deletions(-)
+
+diff --git a/media/mojo/services/gpu_mojo_media_client_linux.cc b/media/mojo/services/gpu_mojo_media_client_linux.cc
+index 6b35e594b2..2620390a62 100644
+--- a/media/mojo/services/gpu_mojo_media_client_linux.cc
++++ b/media/mojo/services/gpu_mojo_media_client_linux.cc
+@@ -22,6 +22,11 @@ BASE_FEATURE(kVaapiVideoDecodeLinuxZeroCopyGL,
+              "VaapiVideoDecodeLinuxZeroCopyGL",
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++std::vector<Fourcc> GetPreferredRenderableFourccs(
++    const gpu::GpuPreferences& gpu_preferences) {
++  return VideoDecoderPipeline::DefaultPreferredRenderableFourccs();
++}
++
+ VideoDecoderType GetPreferredLinuxDecoderImplementation() {
+ #if BUILDFLAG(USE_V4L2_CODEC)
+   return VideoDecoderType::kV4L2;
+@@ -50,40 +55,6 @@ VideoDecoderType GetPreferredLinuxDecoderImplementation() {
+ #endif
+ }
+ 
+-std::vector<Fourcc> GetPreferredRenderableFourccs(
+-    const gpu::GpuPreferences& gpu_preferences) {
+-  std::vector<Fourcc> renderable_fourccs;
+-#if BUILDFLAG(ENABLE_VULKAN)
+-  // Support for zero-copy NV12/P010 textures preferentially.
+-  if (gpu_preferences.gr_context_type == gpu::GrContextType::kVulkan) {
+-    renderable_fourccs.emplace_back(Fourcc::NV12);
+-    renderable_fourccs.emplace_back(Fourcc::P010);
+-  } else
+-#endif  // BUILDFLAG(ENABLE_VULKAN)
+-    // Allow zero-copy formats with GL for testing or in controlled
+-    // environments.
+-    if (gpu_preferences.gr_context_type == gpu::GrContextType::kGL &&
+-        base::FeatureList::IsEnabled(kVaapiVideoDecodeLinuxZeroCopyGL)) {
+-      renderable_fourccs.emplace_back(Fourcc::NV12);
+-      renderable_fourccs.emplace_back(Fourcc::P010);
+-    }
+-
+-  // Support 1-copy argb textures.
+-  //
+-  // TODO(crbug.com/349428388): For VP9 Profile2 and HEVC Main 10 10-bit video,
+-  // the current implementation requires additional VPP to convert the NV12/P010
+-  // format to a renderable format AR24. While this VPP introduces a loss of
+-  // color depth (P010 -> AR24), it should be optimized for zero-copy path in
+-  // the future.
+-  renderable_fourccs.emplace_back(Fourcc::AR24);
+-
+-  // HACK: Support for zero-copy NV12 textures preferentially.
+-  if (gpu_preferences.gr_context_type == gpu::GrContextType::kGL)
+-    renderable_fourccs.emplace_back(Fourcc::NV12);
+-
+-  return renderable_fourccs;
+-}
+-
+ VideoDecoderType GetActualPlatformDecoderImplementation(
+     const gpu::GpuPreferences& gpu_preferences,
+     const gpu::GPUInfo& gpu_info) {
+diff --git a/ui/gfx/linux/gbm_wrapper.cc b/ui/gfx/linux/gbm_wrapper.cc
+index 3f118922a1..7dcf46b1aa 100644
+--- a/ui/gfx/linux/gbm_wrapper.cc
++++ b/ui/gfx/linux/gbm_wrapper.cc
+@@ -406,8 +406,10 @@ class Device final : public ui::GbmDevice {
+ 
+     int gbm_flags = 0;
+     if ((gbm_flags = GetSupportedGbmFlags(format)) == 0) {
++#if defined(MINIGBM)
+       LOG(ERROR) << "gbm format not supported: " << DrmFormatToString(format);
+       return nullptr;
++#endif
+     }
+ 
+     struct gbm_import_fd_modifier_data fd_data;
+-- 
+2.43.0
+

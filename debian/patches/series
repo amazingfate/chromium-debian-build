@@ -151,3 +151,24 @@ ppc64le/fixes/fix-unknown-warning-option-messages.diff
 # These patches enable full POWER ISA 3.0 (POWER9) acceleration when applied
 # They will not work on POWER8 (ISA 2.07) or below
 #ppc64le/core/baseline-isa-3-0.patch
+
+rkmpp/0001-HACK-media-Support-V4L2-video-decoder.patch
+rkmpp/0002-HACK-media-gpu-v4l2-Enable-V4L2-VEA.patch
+rkmpp/0003-media-gpu-v4l2-Gen-libv4l2_stubs.patch
+rkmpp/0004-media-gpu-v4l2-Support-libv4l2-plugins.patch
+rkmpp/0005-media-capture-linux-Support-libv4l2-plugins.patch
+rkmpp/0006-cld3-Avoid-unaligned-accesses.patch
+rkmpp/0007-media-gpu-v4l2-Use-POLLIN-for-pending-event.patch
+rkmpp/0008-media-capture-linux-Prefer-using-the-first-device.patch
+rkmpp/0009-media-gpu-v4l2-Fix-compile-error-when-ozone-not-enab.patch
+rkmpp/0010-Create-new-fence-when-there-s-no-in-fences.patch
+rkmpp/0011-HACK-ozone-wayland-Force-disable-implicit-external-s.patch
+rkmpp/0012-HACK-media-capture-linux-Allow-camera-without-suppor.patch
+rkmpp/0013-content-gpu-Only-depend-dri-for-X11.patch
+rkmpp/0014-media-gpu-sandbox-Only-depend-dri-for-X11.patch
+rkmpp/0015-ui-gfx-linux-Force-disabling-modifiers.patch
+rkmpp/0016-HACK-ui-x11-Fix-config-choosing-error-with-Mali-DDK.patch
+rkmpp/0017-enable-widevine-on-arm64-linux-platform.patch
+rkmpp/0018-ozone-wayland-revert-implicit-sync-interop.patch
+rkmpp/0019-media-enable-NV12-direct-rendering.patch
+rkmpp/0020-media-v4l2-enable-AV1-for-stateful-decoder.patch
