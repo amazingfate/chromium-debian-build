@@ -1,0 +1,25 @@
+From 6cd5c7456ed5a53b6e5c6334e6183f7be09b9b77 Mon Sep 17 00:00:00 2001
+From: Jianfeng Liu <liujianfeng1994@gmail.com>
+Date: Sun, 31 Mar 2024 10:38:01 +0800
+Subject: [PATCH 2/5] support multi v4l2 decoder devices
+
+---
+ media/gpu/chromeos/video_decoder_pipeline.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/media/gpu/chromeos/video_decoder_pipeline.cc b/media/gpu/chromeos/video_decoder_pipeline.cc
+index a92b0a297e..0e128c8b1b 100644
+--- a/media/gpu/chromeos/video_decoder_pipeline.cc
++++ b/media/gpu/chromeos/video_decoder_pipeline.cc
+@@ -356,7 +356,7 @@ VideoDecoderPipeline::GetSupportedConfigs(
+       break;
+ #elif BUILDFLAG(USE_V4L2_CODEC)
+     case VideoDecoderType::kV4L2:
+-      configs = GetSupportedV4L2DecoderConfigs();
++      configs = V4L2VideoDecoder::GetSupportedConfigs();
+       break;
+ #endif
+     default:
+-- 
+2.43.0
+

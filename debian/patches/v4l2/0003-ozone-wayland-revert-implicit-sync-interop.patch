@@ -1,0 +1,399 @@
+From 36becfc5c9c9bc9c9823dfb7a3f590147564bcf4 Mon Sep 17 00:00:00 2001
+From: Jianfeng Liu <liujianfeng1994@gmail.com>
+Date: Thu, 18 Jul 2024 09:48:28 +0800
+Subject: [PATCH 3/5] ozone/wayland: revert implicit sync interop
+
+---
+ ui/gfx/BUILD.gn                               |  1 -
+ ui/gfx/linux/client_native_pixmap_dmabuf.cc   | 21 +++-
+ ui/gfx/linux/dmabuf_uapi.h                    | 48 ----------
+ .../host/wayland_buffer_manager_host.cc       | 96 +------------------
+ .../host/wayland_buffer_manager_host.h        | 22 -----
+ .../wayland/host/wayland_connection.h         |  5 -
+ .../wayland/host/wayland_frame_manager.cc     | 16 ----
+ .../platform/wayland/host/wayland_surface.cc  |  8 +-
+ 8 files changed, 22 insertions(+), 195 deletions(-)
+ delete mode 100644 ui/gfx/linux/dmabuf_uapi.h
+
+diff --git a/ui/gfx/BUILD.gn b/ui/gfx/BUILD.gn
+index c0a85b2cfc..cb9ce2a91c 100644
+--- a/ui/gfx/BUILD.gn
++++ b/ui/gfx/BUILD.gn
+@@ -656,7 +656,6 @@ source_set("memory_buffer_sources") {
+       "linux/client_native_pixmap_dmabuf.h",
+       "linux/client_native_pixmap_factory_dmabuf.cc",
+       "linux/client_native_pixmap_factory_dmabuf.h",
+-      "linux/dmabuf_uapi.h",
+       "linux/native_pixmap_dmabuf.cc",
+       "linux/native_pixmap_dmabuf.h",
+     ]
+diff --git a/ui/gfx/linux/client_native_pixmap_dmabuf.cc b/ui/gfx/linux/client_native_pixmap_dmabuf.cc
+index b68c2f071e..902bc25ba1 100644
+--- a/ui/gfx/linux/client_native_pixmap_dmabuf.cc
++++ b/ui/gfx/linux/client_native_pixmap_dmabuf.cc
+@@ -10,6 +10,7 @@
+ #include "ui/gfx/linux/client_native_pixmap_dmabuf.h"
+ 
+ #include <fcntl.h>
++#include <linux/version.h>
+ #include <stddef.h>
+ #include <sys/ioctl.h>
+ #include <sys/mman.h>
+@@ -29,9 +30,27 @@
+ #include "build/chromecast_buildflags.h"
+ #include "build/chromeos_buildflags.h"
+ #include "ui/gfx/buffer_format_util.h"
+-#include "ui/gfx/linux/dmabuf_uapi.h"
+ #include "ui/gfx/switches.h"
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 11, 0)
++#include <linux/dma-buf.h>
++#else
++#include <linux/types.h>
++
++struct dma_buf_sync {
++  __u64 flags;
++};
++
++#define DMA_BUF_SYNC_READ (1 << 0)
++#define DMA_BUF_SYNC_WRITE (2 << 0)
++#define DMA_BUF_SYNC_RW (DMA_BUF_SYNC_READ | DMA_BUF_SYNC_WRITE)
++#define DMA_BUF_SYNC_START (0 << 2)
++#define DMA_BUF_SYNC_END (1 << 2)
++
++#define DMA_BUF_BASE 'b'
++#define DMA_BUF_IOCTL_SYNC _IOW(DMA_BUF_BASE, 0, struct dma_buf_sync)
++#endif
++
+ namespace gfx {
+ 
+ namespace {
+diff --git a/ui/gfx/linux/dmabuf_uapi.h b/ui/gfx/linux/dmabuf_uapi.h
+deleted file mode 100644
+index d13b890c78..0000000000
+--- a/ui/gfx/linux/dmabuf_uapi.h
++++ /dev/null
+@@ -1,48 +0,0 @@
+-// Copyright 2023 The Chromium Authors
+-// Use of this source code is governed by a BSD-style license that can be
+-// found in the LICENSE file.
+-
+-#ifndef UI_GFX_LINUX_DMABUF_UAPI_H_
+-#define UI_GFX_LINUX_DMABUF_UAPI_H_
+-
+-#include <linux/version.h>
+-
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 11, 0)
+-#include <linux/dma-buf.h>
+-#else
+-#include <linux/types.h>
+-
+-struct dma_buf_sync {
+-  __u64 flags;
+-};
+-
+-constexpr __u64 DMA_BUF_SYNC_READ = 1 << 0;
+-constexpr __u64 DMA_BUF_SYNC_WRITE = 2 << 0;
+-constexpr __u64 DMA_BUF_SYNC_RW = DMA_BUF_SYNC_READ | DMA_BUF_SYNC_WRITE;
+-
+-constexpr __u64 DMA_BUF_SYNC_START = 0 << 2;
+-constexpr __u64 DMA_BUF_SYNC_END = 1 << 2;
+-
+-constexpr char DMA_BUF_BASE = 'b';
+-constexpr unsigned long DMA_BUF_IOCTL_SYNC =
+-    _IOW(DMA_BUF_BASE, 0, struct dma_buf_sync);
+-#endif
+-
+-#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0)
+-struct dma_buf_export_sync_file {
+-  __u32 flags;
+-  __s32 fd;
+-};
+-
+-struct dma_buf_import_sync_file {
+-  __u32 flags;
+-  __s32 fd;
+-};
+-
+-constexpr unsigned long DMA_BUF_IOCTL_EXPORT_SYNC_FILE =
+-    _IOWR(DMA_BUF_BASE, 2, struct dma_buf_export_sync_file);
+-constexpr unsigned long DMA_BUF_IOCTL_IMPORT_SYNC_FILE =
+-    _IOW(DMA_BUF_BASE, 3, struct dma_buf_import_sync_file);
+-#endif
+-
+-#endif  // UI_GFX_LINUX_DMABUF_UAPI_H_
+diff --git a/ui/ozone/platform/wayland/host/wayland_buffer_manager_host.cc b/ui/ozone/platform/wayland/host/wayland_buffer_manager_host.cc
+index e6f14e5597..b5758f793c 100644
+--- a/ui/ozone/platform/wayland/host/wayland_buffer_manager_host.cc
++++ b/ui/ozone/platform/wayland/host/wayland_buffer_manager_host.cc
+@@ -4,10 +4,6 @@
+ 
+ #include "ui/ozone/platform/wayland/host/wayland_buffer_manager_host.h"
+ 
+-#include <sys/ioctl.h>
+-#include <sys/utsname.h>
+-#include <unistd.h>
+-
+ #include <presentation-time-client-protocol.h>
+ #include <memory>
+ #include <utility>
+@@ -15,7 +11,6 @@
+ #include "base/functional/bind.h"
+ #include "base/i18n/number_formatting.h"
+ #include "base/logging.h"
+-#include "base/posix/eintr_wrapper.h"
+ #include "base/strings/strcat.h"
+ #include "base/strings/utf_string_conversions.h"
+ #include "base/task/current_thread.h"
+@@ -23,7 +18,6 @@
+ #include "base/version.h"
+ #include "ui/gfx/geometry/size.h"
+ #include "ui/gfx/gpu_fence_handle.h"
+-#include "ui/gfx/linux/dmabuf_uapi.h"
+ #include "ui/gfx/linux/drm_util_linux.h"
+ #include "ui/ozone/platform/wayland/common/wayland_overlay_config.h"
+ #include "ui/ozone/platform/wayland/host/surface_augmenter.h"
+@@ -46,43 +40,6 @@ std::string NumberToString(uint32_t number) {
+   return base::UTF16ToUTF8(base::FormatNumber(number));
+ }
+ 
+-struct KernelVersion {
+-  int32_t major;
+-  int32_t minor;
+-  int32_t bugfix;
+-};
+-
+-KernelVersion KernelVersionNumbers() {
+-  KernelVersion ver;
+-  struct utsname info;
+-  if (uname(&info) < 0) {
+-    NOTREACHED_IN_MIGRATION();
+-    ver.major = 0;
+-    ver.minor = 0;
+-    ver.bugfix = 0;
+-    return ver;
+-  }
+-  int num_read =
+-      sscanf(info.release, "%d.%d.%d", &ver.major, &ver.minor, &ver.bugfix);
+-  if (num_read < 1) {
+-    ver.major = 0;
+-  }
+-  if (num_read < 2) {
+-    ver.minor = 0;
+-  }
+-  if (num_read < 3) {
+-    ver.bugfix = 0;
+-  }
+-  return ver;
+-}
+-
+-bool CheckImportExportFence() {
+-  KernelVersion ver = KernelVersionNumbers();
+-
+-  // DMA_BUF_IOCTL_{IMPORT,EXPORT}_SYNC_FILE was added in 6.0
+-  return ver.major >= 6;
+-}
+-
+ }  // namespace
+ 
+ WaylandBufferManagerHost::WaylandBufferManagerHost(
+@@ -112,7 +69,6 @@ void WaylandBufferManagerHost::OnChannelDestroyed() {
+   DCHECK(base::CurrentUIThread::IsSet());
+ 
+   buffer_backings_.clear();
+-  dma_buffers_.clear();
+   for (auto* window : connection_->window_manager()->GetAllWindows())
+     window->OnChannelDestroyed();
+ 
+@@ -140,8 +96,7 @@ bool WaylandBufferManagerHost::SupportsDmabuf() const {
+ }
+ 
+ bool WaylandBufferManagerHost::SupportsAcquireFence() const {
+-  return !!connection_->linux_explicit_synchronization_v1() ||
+-         connection_->UseImplicitSyncInterop();
++  return !!connection_->linux_explicit_synchronization_v1();
+ }
+ 
+ bool WaylandBufferManagerHost::SupportsViewporter() const {
+@@ -196,10 +151,6 @@ void WaylandBufferManagerHost::CreateDmabufBasedBuffer(
+     return;
+   }
+ 
+-  if (connection_->UseImplicitSyncInterop()) {
+-    dma_buffers_.emplace(buffer_id, dup(fd.get()));
+-  }
+-
+   // Check if any of the surfaces has already had a buffer with the same id.
+   auto result = buffer_backings_.emplace(
+       buffer_id, std::make_unique<WaylandBufferBackingDmabuf>(
+@@ -407,7 +358,6 @@ void WaylandBufferManagerHost::DestroyBuffer(uint32_t buffer_id) {
+   }
+ 
+   buffer_backings_.erase(buffer_id);
+-  dma_buffers_.erase(buffer_id);
+ }
+ 
+ bool WaylandBufferManagerHost::ValidateDataFromGpu(
+@@ -536,50 +486,6 @@ void WaylandBufferManagerHost::OnPresentation(
+   buffer_manager_gpu_associated_->OnPresentation(widget, presentation_infos);
+ }
+ 
+-void WaylandBufferManagerHost::InsertAcquireFence(uint32_t buffer_id,
+-                                                  int sync_fd) {
+-  DCHECK(connection_->UseImplicitSyncInterop());
+-  auto it = dma_buffers_.find(buffer_id);
+-  if (it == dma_buffers_.end()) {
+-    return;
+-  }
+-
+-  struct dma_buf_import_sync_file req;
+-  req.flags = DMA_BUF_SYNC_RW;
+-  req.fd = sync_fd;
+-
+-  int rv = HANDLE_EINTR(
+-      ioctl(it->second.get(), DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &req));
+-  PLOG_IF(ERROR, rv) << "Failed DMA_BUF_IOCTL_IMPORT_SYNC_FILE";
+-}
+-
+-base::ScopedFD WaylandBufferManagerHost::ExtractReleaseFence(
+-    uint32_t buffer_id) {
+-  DCHECK(connection_->UseImplicitSyncInterop());
+-  auto it = dma_buffers_.find(buffer_id);
+-  if (it == dma_buffers_.end()) {
+-    return base::ScopedFD();
+-  }
+-
+-  struct dma_buf_export_sync_file req;
+-  req.flags = DMA_BUF_SYNC_RW;
+-  req.fd = -1;
+-
+-  if (HANDLE_EINTR(
+-          ioctl(it->second.get(), DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &req)) < 0) {
+-    return base::ScopedFD();
+-  }
+-
+-  return base::ScopedFD(req.fd);
+-}
+-
+-// static
+-bool WaylandBufferManagerHost::SupportsImplicitSyncInterop() {
+-  static const bool can_import_export_sync_file = CheckImportExportFence();
+-
+-  return can_import_export_sync_file;
+-}
+-
+ void WaylandBufferManagerHost::TerminateGpuProcess() {
+   DCHECK(!error_message_.empty());
+   std::move(terminate_gpu_cb_).Run(std::move(error_message_));
+diff --git a/ui/ozone/platform/wayland/host/wayland_buffer_manager_host.h b/ui/ozone/platform/wayland/host/wayland_buffer_manager_host.h
+index d8fdff2ffd..1957b84400 100644
+--- a/ui/ozone/platform/wayland/host/wayland_buffer_manager_host.h
++++ b/ui/ozone/platform/wayland/host/wayland_buffer_manager_host.h
+@@ -154,26 +154,6 @@ class WaylandBufferManagerHost : public ozone::mojom::WaylandBufferManagerHost {
+       gfx::AcceleratedWidget widget,
+       const std::vector<wl::WaylandPresentationInfo>& presentation_infos);
+ 
+-  // Inserts a sync_file into the write fence list of the DMA-BUF. When the
+-  // compositor tries to read from this DMA-BUF via GL, the kernel will
+-  // automatically force its GPU context to wait on all write fences in the
+-  // DMA-BUF, including the fence we inserted. This is used to synchronize with
+-  // compositors that don't support the
+-  // linux-explicit-synchronization-unstable-v1 protocol. Requires Linux 6.0 or
+-  // higher.
+-  void InsertAcquireFence(uint32_t buffer_id, int sync_fd);
+-
+-  // Extracts a sync_file that represents all pending fences inside the DMA-BUF
+-  // kernel object. When the compositor reads the DMA-BUF from GL, the kernel
+-  // automatically adds a completion fence to the read fences list of the
+-  // DMA-BUF that will be signalled once the read operation completes. This is
+-  // used to synchronize with compositors that don't support the
+-  // linux-explicit-synchronization-unstable-v1 protocol. Requires Linux 6.0 or
+-  // higher.
+-  base::ScopedFD ExtractReleaseFence(uint32_t buffer_id);
+-
+-  static bool SupportsImplicitSyncInterop();
+-
+  private:
+   // Validates data sent from GPU. If invalid, returns false and sets an error
+   // message to |error_message_|.
+@@ -213,8 +193,6 @@ class WaylandBufferManagerHost : public ozone::mojom::WaylandBufferManagerHost {
+   // Maps buffer_id's to corresponding WaylandBufferBacking objects.
+   base::flat_map<uint32_t, std::unique_ptr<WaylandBufferBacking>>
+       buffer_backings_;
+-
+-  base::flat_map<uint32_t, base::ScopedFD> dma_buffers_;
+ };
+ 
+ }  // namespace ui
+diff --git a/ui/ozone/platform/wayland/host/wayland_connection.h b/ui/ozone/platform/wayland/host/wayland_connection.h
+index 79680db718..e93547f1ad 100644
+--- a/ui/ozone/platform/wayland/host/wayland_connection.h
++++ b/ui/ozone/platform/wayland/host/wayland_connection.h
+@@ -362,11 +362,6 @@ class WaylandConnection {
+ 
+   void DumpState(std::ostream& out) const;
+ 
+-  bool UseImplicitSyncInterop() const {
+-    return !linux_explicit_synchronization_v1() &&
+-           WaylandBufferManagerHost::SupportsImplicitSyncInterop();
+-  }
+-
+   // Returns a sync callback, which is invoked when the server has processed all
+   // pending events prior to this sync point.
+   struct wl_callback* GetSyncCallback();
+diff --git a/ui/ozone/platform/wayland/host/wayland_frame_manager.cc b/ui/ozone/platform/wayland/host/wayland_frame_manager.cc
+index 5feb1d81cc..5ab7bd2f6a 100644
+--- a/ui/ozone/platform/wayland/host/wayland_frame_manager.cc
++++ b/ui/ozone/platform/wayland/host/wayland_frame_manager.cc
+@@ -731,22 +731,6 @@ void WaylandFrameManager::OnWlBufferRelease(WaylandSurface* surface,
+     auto result = frame->submitted_buffers.find(surface);
+     if (result != frame->submitted_buffers.end() &&
+         result->second->buffer() == buffer) {
+-      if (connection_->UseImplicitSyncInterop()) {
+-        base::ScopedFD fence =
+-            connection_->buffer_manager_host()->ExtractReleaseFence(
+-                result->second->id());
+-
+-        if (fence.is_valid()) {
+-          if (frame->merged_release_fence_fd.is_valid()) {
+-            frame->merged_release_fence_fd.reset(sync_merge(
+-                "", frame->merged_release_fence_fd.get(), fence.get()));
+-          } else {
+-            frame->merged_release_fence_fd = std::move(fence);
+-          }
+-          DCHECK(frame->merged_release_fence_fd.is_valid());
+-        }
+-      }
+-
+       TRACE_EVENT_INSTANT("wayland", "OnWlBufferRelease", "frame_id",
+                           frame->frame_id, "buffer_id", result->second->id());
+       frame->submitted_buffers.erase(result);
+diff --git a/ui/ozone/platform/wayland/host/wayland_surface.cc b/ui/ozone/platform/wayland/host/wayland_surface.cc
+index b3e2067c70..43a02c912e 100644
+--- a/ui/ozone/platform/wayland/host/wayland_surface.cc
++++ b/ui/ozone/platform/wayland/host/wayland_surface.cc
+@@ -279,8 +279,7 @@ void WaylandSurface::set_acquire_fence(gfx::GpuFenceHandle acquire_fence) {
+   // WaylandBufferManagerGPU knows if the synchronization is not available and
+   // must disallow clients to use explicit synchronization.
+   DCHECK(!apply_state_immediately_);
+-  DCHECK(connection_->linux_explicit_synchronization_v1() ||
+-         connection_->UseImplicitSyncInterop());
++  DCHECK(connection_->linux_explicit_synchronization_v1());
+   if (!acquire_fence.is_null()) {
+     base::TimeTicks ticks;
+     auto status =
+@@ -513,11 +512,6 @@ bool WaylandSurface::ApplyPendingState() {
+                   pending_state_.buffer,
+                   std::move(next_explicit_release_request_)));
+         }
+-      } else if (connection_->UseImplicitSyncInterop()) {
+-        if (!pending_state_.acquire_fence.is_null()) {
+-          connection_->buffer_manager_host()->InsertAcquireFence(
+-              pending_state_.buffer_id, pending_state_.acquire_fence.Peek());
+-        }
+       }
+     }
+   }
+-- 
+2.43.0
+

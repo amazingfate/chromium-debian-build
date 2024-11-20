@@ -1,0 +1,27 @@
+From a56c243b91393b532a052bf0977fc6d31c0ea7b6 Mon Sep 17 00:00:00 2001
+From: Jianfeng Liu <liujianfeng1994@gmail.com>
+Date: Fri, 15 Nov 2024 20:54:29 +0800
+Subject: [PATCH 4/5] media: enable NV12 direct rendering
+
+---
+ ui/gfx/linux/gbm_wrapper.cc | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/ui/gfx/linux/gbm_wrapper.cc b/ui/gfx/linux/gbm_wrapper.cc
+index 7a1ae26444..1ab650baec 100644
+--- a/ui/gfx/linux/gbm_wrapper.cc
++++ b/ui/gfx/linux/gbm_wrapper.cc
+@@ -405,8 +405,10 @@ class Device final : public ui::GbmDevice {
+ 
+     int gbm_flags = 0;
+     if ((gbm_flags = GetSupportedGbmFlags(format)) == 0) {
++#if defined(MINIGBM)
+       LOG(ERROR) << "gbm format not supported: " << DrmFormatToString(format);
+       return nullptr;
++#endif
+     }
+ 
+     struct gbm_import_fd_modifier_data fd_data;
+-- 
+2.43.0
+
