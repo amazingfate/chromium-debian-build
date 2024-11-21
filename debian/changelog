@@ -29,6 +29,9 @@ chromium (131.0.6778.85-1~deb12u1) UNRELEASED; urgency=high
     - fixes/updater-test.patch: add simple build fix for deleted
       third_party/updater/.
     - upstream/stack-header.patch: drop, merged upstream.
+    - bookworm/clang16.patch: refresh.
+    - bookworm/bubble-contents.patch: refresh.
+    - bookworm/constexpr.patch: refresh.
 
   [ Timothy Pearson ]
   * d/patches/ppc64le:
