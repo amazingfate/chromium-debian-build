@@ -1,3 +1,46 @@
+chromium (131.0.6778.85-1~deb12u1) UNRELEASED; urgency=high
+
+  [ Andres Salomon ]
+  * New upstream stable release.
+    - CVE-2024-11110: Inappropriate implementation in Blink.
+      Reported by Vsevolod Kokorin (Slonser) of Solidlab.
+    - CVE-2024-11111: Inappropriate implementation in Autofill.
+      Reported by Narendra Bhati, Suma Soft Pvt. Ltd - Pune (India).
+    - CVE-2024-11112: Use after free in Media. Reported by
+      Nan Wang(@eternalsakura13) and Zhenghang Xiao(@Kipreyyy) of
+      360 Vulnerability Research Institute.
+    - CVE-2024-11113: Use after free in Accessibility.
+      Reported by Weipeng Jiang (@Krace) of VRI.
+    - CVE-2024-11114: Inappropriate implementation in Views.
+      Reported by Micky.
+    - CVE-2024-11115: Insufficient policy enforcement in Navigation.
+      Reported by mastersplinter.
+    - CVE-2024-11116: Inappropriate implementation in Paint.
+      Reported by Thomas Orlita.
+    - CVE-2024-11117: Inappropriate implementation in FileSystem.
+      Reported by Ameen Basha M K.
+    - CVE-2024-11395: Type Confusion in V8. Reported by Anonymous.
+  * d/patches:
+    - upstream/wayland-gbm-pixmap.patch: drop, merged upstream.
+    - disable/catapult.patch: refresh.
+    - fixes/bindgen.patch: refresh.
+    - fixes/freetype.patch: add new patch to fix missing
+      enable_freetype arg declaration.
+    - fixes/updater-test.patch: add simple build fix for deleted
+      third_party/updater/.
+    - upstream/stack-header.patch: drop, merged upstream.
+
+  [ Timothy Pearson ]
+  * d/patches/ppc64le:
+    - workarounds/HACK-debian-clang-disable-pa-musttail.patch: Work around
+      additional upstream musttail definitions
+    - workarounds/HACK-debian-clang-disable-base-musttail.patch: Refresh for
+      upstream changes
+    - third_party/0002-third_party-libvpx-Remove-bad-ppc64-config.patch:
+      Refresh for upstream changes
+
+ -- Andres Salomon <dilinger@debian.org>  Thu, 21 Nov 2024 16:12:03 -0500
+
 chromium (130.0.6723.116-1~deb12u1) bookworm-security; urgency=high
 
   * New upstream security release.

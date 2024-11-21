@@ -1,6 +1,8 @@
---- a/base/process/launch.h
-+++ b/base/process/launch.h
-@@ -54,6 +54,9 @@
+Index: chromium-131.0.6778.85/base/process/launch.h
+===================================================================
+--- chromium-131.0.6778.85.orig/base/process/launch.h
++++ chromium-131.0.6778.85/base/process/launch.h
+@@ -58,6 +58,9 @@ namespace base {
  #if defined(ARCH_CPU_ARM64)
  #define PTHREAD_STACK_MIN_CONST \
    (__builtin_constant_p(PTHREAD_STACK_MIN) ? PTHREAD_STACK_MIN : 131072)
