@@ -67,6 +67,7 @@ bookworm/highway-blink.patch
 bookworm/blink-attrib.patch
 bookworm/cacheline.patch
 bookworm/partially-deployed-mseal-syscall.patch
+bookworm/constexpr-assert.patch
 
 # Ungoogled Chromium
 ungoogled/disable-privacy-sandbox.patch

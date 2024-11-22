@@ -32,6 +32,13 @@ chromium (131.0.6778.85-1~deb12u1) UNRELEASED; urgency=high
     - bookworm/clang16.patch: refresh.
     - bookworm/bubble-contents.patch: refresh.
     - bookworm/constexpr.patch: refresh.
+    - bookworm/gn-absl.patch: add a few more places where libs needed to
+      be made visible.
+    - bookworm/gn-funcs.patch: add another deletion of newer gn
+      features.
+    - bookworm/constexpr-assert.patch: add patch to work around more
+      clang-16 constexpr bugs; this time a fun one with branching
+      optimizations. Whee!
 
   [ Timothy Pearson ]
   * d/patches/ppc64le:
