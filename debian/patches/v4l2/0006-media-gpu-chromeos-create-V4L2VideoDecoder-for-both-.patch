@@ -1,0 +1,31 @@
+From d47b7492549dd7270ae965c0fc0c7138437dccde Mon Sep 17 00:00:00 2001
+From: Jianfeng Liu <liujianfeng1994@gmail.com>
+Date: Thu, 28 Nov 2024 19:38:29 +0800
+Subject: [PATCH 6/6] media/gpu/chromeos: create V4L2VideoDecoder for both
+ stateful and stateless decoder
+
+---
+ media/gpu/chromeos/video_decoder_pipeline.cc | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/media/gpu/chromeos/video_decoder_pipeline.cc b/media/gpu/chromeos/video_decoder_pipeline.cc
+index c00c7b5dc5..6617db1bed 100644
+--- a/media/gpu/chromeos/video_decoder_pipeline.cc
++++ b/media/gpu/chromeos/video_decoder_pipeline.cc
+@@ -230,12 +230,7 @@ std::unique_ptr<VideoDecoder> VideoDecoderPipeline::Create(
+ #if BUILDFLAG(USE_VAAPI)
+     create_decoder_function_cb = base::BindOnce(&VaapiVideoDecoder::Create);
+ #elif BUILDFLAG(USE_V4L2_CODEC)
+-    if (IsV4L2DecoderStateful()) {
+-      create_decoder_function_cb =
+-          base::BindOnce(&V4L2StatefulVideoDecoder::Create);
+-    } else {
+-      create_decoder_function_cb = base::BindOnce(&V4L2VideoDecoder::Create);
+-    }
++    create_decoder_function_cb = base::BindOnce(&V4L2VideoDecoder::Create);
+ #else
+     return nullptr;
+ #endif
+-- 
+2.43.0
+

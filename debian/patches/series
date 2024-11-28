@@ -138,3 +138,10 @@ ppc64le/fixes/fix-unknown-warning-option-messages.diff
 # These patches enable full POWER ISA 3.0 (POWER9) acceleration when applied
 # They will not work on POWER8 (ISA 2.07) or below
 #ppc64le/core/baseline-isa-3-0.patch
+
+v4l2/0001-enable-v4l2-av1-decoder-for-linux.patch
+v4l2/0002-ozone-wayland-revert-implicit-sync-interop.patch
+v4l2/0003-media-enable-NV12-direct-rendering.patch
+v4l2/0004-enable-widevine-on-arm64-linux-platform.patch
+v4l2/0005-media-gpu-v4l2-Support-mainline-Linux-device-paths.patch
+v4l2/0006-media-gpu-chromeos-create-V4L2VideoDecoder-for-both-.patch
