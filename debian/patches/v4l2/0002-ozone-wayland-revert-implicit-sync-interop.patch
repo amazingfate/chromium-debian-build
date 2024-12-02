@@ -1,7 +1,7 @@
-From 5bbb350063a968e436092a48cd1d9dac1d4e0ba9 Mon Sep 17 00:00:00 2001
+From 2686d1bf5fb7427d4150028429b38bf3a86332ea Mon Sep 17 00:00:00 2001
 From: Jianfeng Liu <liujianfeng1994@gmail.com>
 Date: Thu, 18 Jul 2024 09:48:28 +0800
-Subject: [PATCH 2/6] ozone/wayland: revert implicit sync interop
+Subject: [PATCH 2/5] ozone/wayland: revert implicit sync interop
 
 ---
  ui/gfx/BUILD.gn                               |  1 -

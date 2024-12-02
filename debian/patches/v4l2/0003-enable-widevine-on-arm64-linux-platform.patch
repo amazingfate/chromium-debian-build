@@ -1,7 +1,7 @@
-From 49a5dd275d425347a7b8501938ba3201e60ac709 Mon Sep 17 00:00:00 2001
+From 91ad96991a8dd882444ae2d945cffc32bee9dbcc Mon Sep 17 00:00:00 2001
 From: Jianfeng Liu <liujianfeng1994@gmail.com>
 Date: Thu, 18 Jul 2024 11:10:21 +0800
-Subject: [PATCH 4/6] enable widevine on arm64 linux platform
+Subject: [PATCH 3/5] enable widevine on arm64 linux platform
 
 ---
  third_party/widevine/cdm/widevine.gni | 2 +-

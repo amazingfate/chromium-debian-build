@@ -1,7 +1,7 @@
-From afbc142c1ba58c5185e6dc55b95c4116349d0403 Mon Sep 17 00:00:00 2001
+From 2315451f93b8113d26ed194560cdfb42d50f0352 Mon Sep 17 00:00:00 2001
 From: Robert Mader <robert.mader@collabora.com>
 Date: Tue, 15 Oct 2024 18:04:05 +0000
-Subject: [PATCH 5/6] media/gpu/v4l2: Support mainline Linux device paths
+Subject: [PATCH 4/5] media/gpu/v4l2: Support mainline Linux device paths
 
 Upstream Linux does not use the ChromeOS-specific device path patterns
 for "-dec", "-enc" etc. Add support for the respective mainline patterns

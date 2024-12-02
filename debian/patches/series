@@ -141,7 +141,6 @@ ppc64le/fixes/fix-unknown-warning-option-messages.diff
 
 v4l2/0001-enable-v4l2-av1-decoder-for-linux.patch
 v4l2/0002-ozone-wayland-revert-implicit-sync-interop.patch
-v4l2/0003-media-enable-NV12-direct-rendering.patch
-v4l2/0004-enable-widevine-on-arm64-linux-platform.patch
-v4l2/0005-media-gpu-v4l2-Support-mainline-Linux-device-paths.patch
-v4l2/0006-media-gpu-chromeos-create-V4L2VideoDecoder-for-both-.patch
+v4l2/0003-enable-widevine-on-arm64-linux-platform.patch
+v4l2/0004-media-gpu-v4l2-Support-mainline-Linux-device-paths.patch
+v4l2/0005-media-gpu-chromeos-Use-V4L2VideoDecoder-for-linux.patch
