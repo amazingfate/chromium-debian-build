@@ -20,3 +20,6 @@ export CHROMIUM_FLAGS="$CHROMIUM_FLAGS --ozone-platform-hint=wayland"
 
 # Enable V4L2 decoding and  NV12 direct rendering
 export CHROMIUM_FLAGS="$CHROMIUM_FLAGS --enable-features=AcceleratedVideoDecoder,AcceleratedVideoDecodeLinuxGL,AcceleratedVideoDecodeLinuxZeroCopyGL"
+
+# Disable V4L2 stateless AV1 decoder since it is still not mature
+export CHROMIUM_FLAGS="$CHROMIUM_FLAGS --disable-features=ChromeOSHWAV1Decoder"
