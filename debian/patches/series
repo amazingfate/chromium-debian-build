@@ -48,26 +48,11 @@ system/rapidjson.patch
 system/rollup.patch
 
 bookworm/libxml-parseerr.patch
-bookworm/clang16.patch
 bookworm/freetype-COLRV1.patch
-bookworm/bubble-contents.patch
-bookworm/sizet.patch
-bookworm/urlhelper-ctor.patch
-bookworm/v8-wrappable.patch
-bookworm/lex-3way.patch
-bookworm/traitors.patch
-bookworm/spaceship-operator.patch
-bookworm/more-spaceships.patch
-bookworm/signer-lambda.patch
-bookworm/constexpr.patch
-bookworm/constexpr2.patch
 bookworm/gn-funcs.patch
 bookworm/gn-absl.patch
 bookworm/highway-blink.patch
-bookworm/blink-attrib.patch
-bookworm/cacheline.patch
 bookworm/partially-deployed-mseal-syscall.patch
-bookworm/constexpr-assert.patch
 
 # Ungoogled Chromium
 ungoogled/disable-privacy-sandbox.patch

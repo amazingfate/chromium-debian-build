@@ -1,3 +1,9 @@
+chromium (131.0.6778.85-1~deb12u1) UNRELEASED; urgency=high
+
+  * Switch to clang-19 from clang-16 (closes: #1088162, #1088974).
+
+ -- Andres Salomon <dilinger@debian.org>  Thu, 21 Nov 2024 16:12:03 -0500
+
 chromium (131.0.6778.85-1~deb12u1) bookworm-security; urgency=high
 
   [ Andres Salomon ]
