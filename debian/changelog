@@ -1,8 +1,11 @@
-chromium (131.0.6778.85-1~deb12u1) UNRELEASED; urgency=high
+chromium (131.0.6778.108-1~deb12u1) bookworm-security; urgency=high
 
+  * New upstream security release.
+    - CVE-2024-12053: Type Confusion in V8.
+      Reported by gal1ium and chluo.
   * Switch to clang-19 from clang-16 (closes: #1088162, #1088974).
 
- -- Andres Salomon <dilinger@debian.org>  Thu, 21 Nov 2024 16:12:03 -0500
+ -- Andres Salomon <dilinger@debian.org>  Wed, 04 Dec 2024 01:55:50 -0500
 
 chromium (131.0.6778.85-1~deb12u1) bookworm-security; urgency=high
 
