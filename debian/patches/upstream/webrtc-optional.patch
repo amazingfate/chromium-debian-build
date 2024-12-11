@@ -1,0 +1,26 @@
+In file included from ../../third_party/webrtc/api/crypto/crypto_options.cc:16:
+../../third_party/webrtc/rtc_base/ssl_stream_adapter.h:190:16: error: no template named 'optional' in namespace 'std'
+  190 |   virtual std::optional<absl::string_view> GetTlsCipherSuiteName() const = 0;
+      |           ~~~~~^
+1 error generated.
+
+Fixed upstream (webrtc) as part of a larger commit:
+commit 4060745995b8d054584969c7f55a6ef57da0a54d
+Author: Philipp Hancke <phancke@meta.com>
+Date:   Tue Nov 26 10:50:26 2024 -0800
+
+    spanify SSLStreamAdapter::SetPeerCertificateDigest
+    
+    BUG=webrtc:357776213
+
+
+--- a/third_party/webrtc/rtc_base/ssl_stream_adapter.h
++++ b/third_party/webrtc/rtc_base/ssl_stream_adapter.h
+@@ -15,6 +15,7 @@
+ #include <stdint.h>
+ 
+ #include <memory>
++#include <optional>
+ #include <string>
+ #include <vector>
+ 

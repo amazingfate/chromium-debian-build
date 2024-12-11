@@ -20,8 +20,8 @@ export CXX=clang++-19
 
 # initial flags from dpkg-buildflags
 export DEB_CXXFLAGS_MAINT_STRIP=-g
-export CXXFLAGS=$(shell dpkg-buildflags --get CXXFLAGS) -stdlib=libc++
-export LDFLAGS=$(shell dpkg-buildflags --get LDFLAGS) -stdlib=libc++
+export CXXFLAGS=$(shell dpkg-buildflags --get CXXFLAGS)
+export LDFLAGS=$(shell dpkg-buildflags --get LDFLAGS)
 
 # more verbose linker output
 export LDFLAGS+=-Wl,--stats
@@ -224,28 +224,29 @@ debvers=../chromium_$(version)
 seconds=$(debvers).seconds
 origtxz=$(debvers).orig.tar.xz
 removed=$(debvers).files-removed
-options=--sort=name --owner=0 --group=0 --numeric-owner --mtime="@$$(stat --format "%Y" ../$(tarball))" --clamp-mtime
+options=--sort=name --owner=0 --group=0 --numeric-owner --mtime="@$$(cat $(extract)/build/util/LASTCHANGE.committime)" --clamp-mtime
+print_elapsed=echo $$(($$(date +%s) - $$(cat $(seconds)))) seconds
 
 get-orig-source:
 	wget -nv --show-progress -c $(url)/$(tarball) -O ../$(tarball)
 	@date +%s > $(seconds)
-	# TODO: use `grep-dctrl -F Files-Excluded '' -s Files-Excluded debian/copyright` instead (from jochensp)
-	perl debian/scripts/get-excludes.pl "`tar tf ../$(tarball) | head -n1`" > $(debvers).excludes
-	@echo $$(($$(date +%s) - $$(cat $(seconds)))) seconds
-	@echo
-	test ! -e $(extract) || rm -rf $(extract)
+	top="$$(tar tf ../$(tarball) | head -n1)" \
+	&& test -n "$$top" \
+	&& grep-dctrl -n -F Files-Excluded -s Files-Excluded '' debian/copyright \
+	| sed -r 's/^ +//; /^$$/d' \
+	| awk -v top="$$top" '/^\*/{print; next} {print top $$0}' \
+	> $(debvers).excludes
+	rm -rf $(extract)
+	@$(print_elapsed); echo
 	tar --exclude-from=$(debvers).excludes -xf ../$(tarball)
-	@echo $$(($$(date +%s) - $$(cat $(seconds)))) seconds
-	@echo
 	rm -f $(debvers).excludes
+	@$(print_elapsed); echo
 	cd $(extract) && ../debian/scripts/check-upstream
 	chmod -R u+w $(extract)
-	@echo $$(($$(date +%s) - $$(cat $(seconds)))) seconds
-	@echo
-	test ! -e $(origtxz) || rm -f $(origtxz)
+	@$(print_elapsed); echo
+	rm -f $(origtxz)
 	tar $(options) -cf - $(extract) | xz -6 -T0 - > $(origtxz)
-	@echo $$(($$(date +%s) - $$(cat $(seconds)))) seconds
-	@echo
+	@$(print_elapsed); echo
 	rm -rf $(extract)
-	@echo $$(($$(date +%s) - $$(cat $(seconds)))) seconds | tee seconds
+	@$(print_elapsed) | tee seconds
 	@mv -f seconds $(seconds)

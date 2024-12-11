@@ -13,11 +13,15 @@ Files-Excluded:
  *.exe
  *.fst
  *.jar
+ *.java
  *.mp4
  *.msi
  *.wasm
  *.ogg
  *.otf
+ *.out
+ *.pbtxt
+ *.po
  *.pyc
  *.pyd
  *.tflite
@@ -31,6 +35,7 @@ Files-Excluded:
  *config.sub
  *config.guess
  *jquery*.min.js
+ docs
  ios
  buildtools
  build/linux/debian_bullseye_*
@@ -94,6 +99,8 @@ Files-Excluded:
  third_party/harfbuzz-ng/src
  third_party/harfbuzz-ng/harfbuzz.gni
  third_party/highway
+ third_party/icu/source/data
+ third_party/libc++/src/test
  third_party/llvm*
  third_party/libei
  third_party/webgl
@@ -142,6 +149,7 @@ Files-Excluded:
  third_party/unrar
  third_party/apache-linux
  third_party/checkstyle
+ third_party/speedometer/v3.0
  third_party/swiftshader/tests
  third_party/swiftshader/third_party/SPIRV-Tools/tools
  third_party/swiftshader/third_party/llvm-16.0
@@ -184,6 +192,7 @@ Files-Excluded:
  third_party/pdfium/third_party/libtiff
  third_party/breakpad/breakpad/src/client/mac
  third_party/boringssl/src/crypto/cipher_extra/test
+ third_party/boringssl/src/third_party/wycheproof_testvectors
  third_party/dom_distiller_js/dist/js/domdistiller_wrapped.js
  third_party/devtools-frontend/src/third_party/image_diff
  third_party/devtools-frontend/src/node_modules/.bin
@@ -191,8 +200,9 @@ Files-Excluded:
  third_party/libphonenumber/dist/javascript/i18n/phonenumbers/metadatalite.js
  third_party/tflite/src/tensorflow/examples/multibox_detector/data/surfers.jpg
  third_party/tflite/src/tensorflow/lite/experimental/acceleration/mini_benchmark/models/blazeface_mlkit_v1.tfl
+ third_party/tflite/src/tensorflow/python
  third_party/devtools-frontend/src/third_party/esbuild/esbuild
- third_party/nearby/src/third_party
+ third_party/nearby/src
  third_party/sqlite/src/test
  third_party/updater
  third_party/zstd

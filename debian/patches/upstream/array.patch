@@ -1,0 +1,34 @@
+../../components/sync/base/unique_position.h:48:23: error: no template named 'array' in namespace 'std'
+   48 |   using Suffix = std::array<uint8_t, kSuffixLength>;
+      |                  ~~~~~^
+
+
+commit ee90b98ddd370e7adc35a4892c84be21d4ae813b
+Author: Ivan Murashov <ivan.murashov@lge.com>
+Date:   Mon Nov 18 20:31:44 2024 +0000
+
+    IWYU: Add missing include for std::array usage in unique_position.h
+    
+    In the CL https://crrev.com/c/5899059 used std::array in the
+    components/sync/base/unique_position.h, but required include was missed.
+    Added missing include for std::array usage.
+    
+    Bug: 41455655
+    Change-Id: I0c2a95cf087867d73b81b2028ee04027f2653c34
+    Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6020662
+    Reviewed-by: Sylvain Defresne <sdefresne@chromium.org>
+    Commit-Queue: Ivan Murashov <ivan.murashov@lge.com>
+    Reviewed-by: Ted Choc <tedchoc@chromium.org>
+    Cr-Commit-Position: refs/heads/main@{#1384538}
+
+
+--- a/components/sync/base/unique_position.h
++++ b/components/sync/base/unique_position.h
+@@ -8,6 +8,7 @@
+ #include <stddef.h>
+ #include <stdint.h>
+ 
++#include <array>
+ #include <string>
+ 
+ namespace sync_pb {

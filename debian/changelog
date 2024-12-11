@@ -1,3 +1,38 @@
+chromium (131.0.6778.139-1~deb12u1) UNRELEASED; urgency=high
+
+  [ Andres Salomon ]
+  * New upstream security release.
+    - CVE-2024-12381: Type Confusion in V8.
+      Reported by Seunghyun Lee (@0x10n).
+    - CVE-2024-12382: Use after free in Translate. Reported by
+      lime(@limeSec_) from TIANGONG Team of Legendsec at QI-ANXIN Group.
+  * (Temporarily?) switch from llvm's libc++ to gcc's libstdc++ to
+    simplify the prior clang-16/19 upgrades.
+  * d/patches:
+    - fixes/bindgen.patch: refresh.
+    - upstream/dawn-strlen.patch: add gcc-specific build fix.
+    - upstream/ink-isfinite.patch: add gcc-specific build fix.
+    - upstream/webrtc-optional.patch: add gcc-specific build fix.
+    - upstream/variant.patch: add gcc-specific build fixes.
+    - upstream/array.patch: add gcc-specific build fix.
+    - fixes/absl-optional.patch: re-introduce clang/gcc build workaround.
+    - upstream/mrc-copy-op.patch: add gcc-specific build fix.
+    - fixes/font-gc-asan.patch: add a better workaround for bad font-gc
+      behavior under libstdc++. This is self-contained and small, unlike
+      the prior reverts of the switch to font garbage collection.
+
+  [ Nathan Teodosio ]
+  * Simplify fixes/bindgen.patch so it doesn't need frequent rebasing.
+
+  [ Daniel Richard G. ]
+  * d/copyright: Expand list of Files-Excluded: entries.
+  * d/rules: Various updates to get-orig-source rule, including use of
+    grep-dctrl(1) and the LASTCHANGE.committime timestamp.
+  * d/scripts/check-upstream: Avoid issues with inaccurate $(pwd) value and
+    spaces in filenames, and print all errors instead of only the first one.
+
+ -- Andres Salomon <dilinger@debian.org>  Wed, 11 Dec 2024 15:33:53 -0500
+
 chromium (131.0.6778.108-1~deb12u1) bookworm-security; urgency=high
 
   * New upstream security release.

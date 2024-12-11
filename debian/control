@@ -17,8 +17,6 @@ Build-Depends:
  clang-19,
  clang-format-19,
  libclang-rt-19-dev,
- libc++-19-dev,
- libc++abi-19-dev,
  rustc-web (>= 1.74),
  bindgen,
  python3,

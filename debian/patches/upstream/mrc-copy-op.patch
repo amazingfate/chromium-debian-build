@@ -1,0 +1,41 @@
+commit 78c316b83ca926f250935198d43ad37d20069115
+Author: Jose Dapena Paz <jdapena@igalia.com>
+Date:   Wed Oct 16 08:58:17 2024 +0000
+
+    Fix MatchingReusedCredential copy operator.
+    
+    It was wrongly declared without const.
+    
+    Bug: 41455655
+    Change-Id: I7014fc7b1e4ffdc54b2232044540b8f0fc10a3d5
+    Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5934460
+    Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+    Reviewed-by: Ioana Pandele <ioanap@chromium.org>
+    Cr-Commit-Position: refs/heads/main@{#1369261}
+
+diff --git a/components/password_manager/core/browser/password_reuse_detector.cc b/components/password_manager/core/browser/password_reuse_detector.cc
+index fbb8bce4fad45..6ed2427047d8f 100644
+--- a/components/password_manager/core/browser/password_reuse_detector.cc
++++ b/components/password_manager/core/browser/password_reuse_detector.cc
+@@ -27,7 +27,7 @@ MatchingReusedCredential::MatchingReusedCredential(
+ MatchingReusedCredential::~MatchingReusedCredential() = default;
+ 
+ MatchingReusedCredential& MatchingReusedCredential::operator=(
+-    MatchingReusedCredential& other) = default;
++    const MatchingReusedCredential& other) = default;
+ MatchingReusedCredential& MatchingReusedCredential::operator=(
+     MatchingReusedCredential&&) = default;
+ 
+diff --git a/components/password_manager/core/browser/password_reuse_detector.h b/components/password_manager/core/browser/password_reuse_detector.h
+index 89b7c64002442..ca95b89617626 100644
+--- a/components/password_manager/core/browser/password_reuse_detector.h
++++ b/components/password_manager/core/browser/password_reuse_detector.h
+@@ -50,7 +50,7 @@ struct MatchingReusedCredential {
+                           const MatchingReusedCredential&) = default;
+   friend bool operator==(const MatchingReusedCredential&,
+                          const MatchingReusedCredential&) = default;
+-  MatchingReusedCredential& operator=(MatchingReusedCredential& other);
++  MatchingReusedCredential& operator=(const MatchingReusedCredential& other);
+   MatchingReusedCredential& operator=(MatchingReusedCredential&&);
+ 
+   std::string signon_realm;

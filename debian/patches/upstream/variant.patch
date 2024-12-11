@@ -1,0 +1,88 @@
+In file included from ../../chrome/browser/browsing_data/chrome_browsing_data_lifetime_manager.cc:37:
+In file included from ../../components/sync/service/sync_service.h:20:
+../../components/sync/service/local_data_description.h:28:18: error: no template named 'variant' in namespace 'std'; did you mean 'absl::variant'?
+   28 |   using DataId = std::variant<
+      |                  ^~~~~~~~~~~~
+      |                  absl::variant
+../../third_party/abseil-cpp/absl/types/variant.h:123:7: note: 'absl::variant' declared here
+  123 | class variant;
+      |       ^
+1 error generated.
+
+Fixed by three commits:
+
+commit 33af9dc7d2801995990d1bb36ef1d98e3f80ca18
+Author: Ivan Murashov <ivan.murashov@lge.com>
+Date:   Mon Nov 18 20:26:50 2024 +0000
+
+    IWYU: Add missing include for std::variant usage in local_data_description.h
+    
+    In the CL https://crrev.com/c/5934368 used std::variant in the
+    components/sync/service/local_data_description.h, but required
+    include was missed. Added missing include for std::variant usage.
+    
+    Bug: 41455655
+    Change-Id: If67c513d3b9b89775afb2e36a9913ea67a284e0c
+    Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6028535
+    Reviewed-by: Ted Choc <tedchoc@chromium.org>
+    Commit-Queue: Ivan Murashov <ivan.murashov@lge.com>
+    Reviewed-by: Sylvain Defresne <sdefresne@chromium.org>
+    Cr-Commit-Position: refs/heads/main@{#1384535}
+
+commit 8fa8d8f68f5bf71e70038994276e0225f006eb73
+Author: Jose Dapena Paz <jdapena@igalia.com>
+Date:   Tue Oct 15 21:45:09 2024 +0000
+
+    IWYU: missing include for usage of std::variant in saved_tab_groups/public/types.h
+    
+    Bug: 41455655
+    Change-Id: Ic4fdb5baeda2e4be3c35c976dfa6dfd396a60643
+    Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5899087
+    Reviewed-by: Shakti Sahu <shaktisahu@chromium.org>
+    Commit-Queue: Shakti Sahu <shaktisahu@chromium.org>
+    Cr-Commit-Position: refs/heads/main@{#1369048}
+
+commit 1f9a4db9f8f0d8b1561a6e264d2d88f064f19fbc
+Author: Jose Dapena Paz <jdapena@igalia.com>
+Date:   Tue Oct 15 21:28:47 2024 +0000
+
+    IWYU: missing include for usage of std::variant in bookmark_merged_surface_service.h
+    
+    Bug: 41455655
+    Change-Id: I00b251c7dc4a35a9bf7fd023fd35a9051c7a715c
+    Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5935116
+    Reviewed-by: Scott Violet <sky@chromium.org>
+    Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+    Cr-Commit-Position: refs/heads/main@{#1369030}
+
+
+--- a/components/sync/service/local_data_description.h
++++ b/components/sync/service/local_data_description.h
+@@ -6,6 +6,7 @@
+ #define COMPONENTS_SYNC_SERVICE_LOCAL_DATA_DESCRIPTION_H_
+ 
+ #include <string>
++#include <variant>
+ #include <vector>
+ 
+ #include "components/sync/base/data_type.h"
+--- a/components/saved_tab_groups/public/types.h
++++ b/components/saved_tab_groups/public/types.h
+@@ -6,6 +6,7 @@
+ #define COMPONENTS_SAVED_TAB_GROUPS_PUBLIC_TYPES_H_
+ 
+ #include <optional>
++#include <variant>
+ 
+ #include "base/logging.h"
+ #include "base/token.h"
+--- a/chrome/browser/bookmarks/bookmark_merged_surface_service.h
++++ b/chrome/browser/bookmarks/bookmark_merged_surface_service.h
+@@ -5,6 +5,7 @@
+ #ifndef CHROME_BROWSER_BOOKMARKS_BOOKMARK_MERGED_SURFACE_SERVICE_H_
+ #define CHROME_BROWSER_BOOKMARKS_BOOKMARK_MERGED_SURFACE_SERVICE_H_
+ 
++#include <variant>
+ #include <vector>
+ 
+ #include "base/memory/raw_ptr.h"
