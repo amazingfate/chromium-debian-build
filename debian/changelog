@@ -20,6 +20,10 @@ chromium (131.0.6778.139-1~deb12u1) UNRELEASED; urgency=high
     - fixes/font-gc-asan.patch: add a better workaround for bad font-gc
       behavior under libstdc++. This is self-contained and small, unlike
       the prior reverts of the switch to font garbage collection.
+    - bookworm/constexpr.patch: re-enable (and refresh) build fix
+      specifically for gcc 12.
+    - bookworm/constexpr2.patch: re-enable build fix for gcc 12.
+    - bookworm/bubble-contents.patch: re-enable build fix for gcc 12.
 
   [ Nathan Teodosio ]
   * Simplify fixes/bindgen.patch so it doesn't need frequent rebasing.

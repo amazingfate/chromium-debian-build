@@ -61,6 +61,9 @@ bookworm/gn-funcs.patch
 bookworm/gn-absl.patch
 bookworm/highway-blink.patch
 bookworm/partially-deployed-mseal-syscall.patch
+bookworm/constexpr.patch
+bookworm/constexpr2.patch
+bookworm/bubble-contents.patch
 
 # Ungoogled Chromium
 ungoogled/disable-privacy-sandbox.patch
