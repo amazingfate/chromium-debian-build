@@ -2,6 +2,7 @@ debianization/manpage.patch
 debianization/sandbox.patch
 debianization/master-preferences.patch
 debianization/clang-version.patch
+debianization/swiftshader-use-llvm-16.patch
 
 fixes/ps-print.patch
 fixes/widevine-revision.patch
@@ -96,7 +97,6 @@ ppc64le/third_party/0001-third_party-lss-Don-t-look-for-mmap2-on-ppc64.patch
 ppc64le/third_party/0001-third_party-pffft-Include-altivec.h-on-ppc64-with-SI.patch
 ppc64le/third_party/0002-Add-PPC64-generated-files-for-boringssl.patch
 ppc64le/third_party/0002-third_party-lss-kernel-structs.patch
-ppc64le/third_party/0001-swiftshader-fix-build.patch
 
 ppc64le/webrtc/Rtc_base-system-arch.h-PPC.patch
 

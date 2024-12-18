@@ -1,3 +1,19 @@
+chromium (131.0.6778.204-1~deb12u1) bookworm-security; urgency=high
+
+  [ Andres Salomon ]
+  * New upstream security release.
+    - CVE-2024-12692: Type Confusion in V8.
+      Reported by Seunghyun Lee (@0x10n).
+    - CVE-2024-12693: Out of bounds memory access in V8.
+      Reported by 303f06e3.
+    - CVE-2024-12694: Use after free in Compositing. Reported by Anonymous.
+    - CVE-2024-12695: Out of bounds write in V8. Reported by 303f06e3.
+
+  [ Bo Yu ]
+  * Build swiftshader with llvm-16 instead of llvm-10.
+
+ -- Andres Salomon <dilinger@debian.org>  Wed, 18 Dec 2024 16:52:56 -0500
+
 chromium (131.0.6778.139-1~deb12u1) bookworm-security; urgency=high
 
   [ Andres Salomon ]

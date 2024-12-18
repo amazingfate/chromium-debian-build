@@ -152,7 +152,7 @@ Files-Excluded:
  third_party/speedometer/v3.0
  third_party/swiftshader/tests
  third_party/swiftshader/third_party/SPIRV-Tools/tools
- third_party/swiftshader/third_party/llvm-16.0
+ third_party/swiftshader/third_party/llvm-10.0
  third_party/apache-win32
  third_party/apache-portable-runtime
  third_party/instrumented_lib*
