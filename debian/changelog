@@ -8,6 +8,10 @@ chromium (131.0.6778.204-1~deb12u1) bookworm-security; urgency=high
       Reported by 303f06e3.
     - CVE-2024-12694: Use after free in Compositing. Reported by Anonymous.
     - CVE-2024-12695: Out of bounds write in V8. Reported by 303f06e3.
+  * d/patches/fixes/absl-optional.patch: comment out __glibcxx_assert()
+    that we keep hitting with gcc 12; it was previously commented out, but
+    we lost the change when we switched from libstdc++ and then back. I'm
+    unsure if we need it with gcc 14.
 
   [ Bo Yu ]
   * Build swiftshader with llvm-16 instead of llvm-10.
