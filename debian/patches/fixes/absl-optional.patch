@@ -44,8 +44,7 @@ functions (where you see an '#if 0' commenting out the original function).
 We'll need to update this patch with major libstdc++ upgrades.
 
 XXX: one additional fix; comment out a __glibcxx_assert() that we keep
-hitting with gcc 12. Unsure if it's still a problem with gcc 14, but it
-triggers the following runtime crash on 12:
+hitting with gcc 12 and gcc 14:
 
 ../../optional:477: _Tp &std::_Optional_base_impl<content::DocumentAssociatedData, std::_Optional_base<content::DocumentAssociatedData>>::_M_get() [_Tp = content::DocumentAssociatedData, _Dp = std::_Optional_base<content::DocumentAssociatedData>]: Assertion 'this->_M_is_engaged()' failed.
 [1218/170223.662125:ERROR:elf_dynamic_array_reader.h(64)] tag not found
