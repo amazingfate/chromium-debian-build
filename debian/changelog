@@ -1,3 +1,17 @@
+chromium (131.0.6778.264-1~deb12u1) bookworm-security; urgency=high
+
+  [ Andres Salomon ]
+  * New upstream security release.
+    - CVE-2025-0291: Type Confusion in V8. Reported by Popax21.
+  * d/copyright: Delete some unused upstream binaries that we'd
+    previously missed (closes: #1091459).
+
+  [ Bo YU ]
+  * Enable 0001-swiftshader-fix-build.patch on ppc64el again to fix
+    FTBFS issue.
+
+ -- Andres Salomon <dilinger@debian.org>  Wed, 08 Jan 2025 11:26:36 -0500
+
 chromium (131.0.6778.204-1~deb12u1) bookworm-security; urgency=high
 
   [ Andres Salomon ]

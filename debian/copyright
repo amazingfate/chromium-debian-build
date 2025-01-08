@@ -2,15 +2,20 @@ Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0
 Source: http://www.chromium.org/Home
 Upstream-Name: chromium
 Files-Excluded:
+ *.apk
  *.binarypb
  *.bincfg
  *.clang*
+ *.class
  *.git*
+ *.lib
  *__pycache__
+ *.pkg
  *.mk
  *.so
  *.dll
  *.exe
+ *.exe.*
  *.fst
  *.jar
  *.java
@@ -63,6 +68,7 @@ Files-Excluded:
  chrome/installer/launcher_support
  chrome/utility/safe_browsing/rar_analyzer.*
  chrome/browser/android/examples
+ chrome/browser/resources/chromeos/accessibility/common/testing
  chrome/browser/resources/chromeos/s*
  chrome/browser/resources/chromeos/l*
  chrome/browser/resources/chromeos/n*
