@@ -1,3 +1,36 @@
+chromium (132.0.6834.83-1~deb12u1) UNRELEASED; urgency=high
+
+  * New upstream stable release.
+  * d/patches:
+    - upstream/blink-fix-size-assertions.patch: drop, merged upstream.
+    - upstream/dawn-strlen.patch: drop, merged upstream.
+    - upstream/mrc-copy-op.patch: drop, merged upstream.
+    - upstream/variant.patch: part of this was merged upstream; keep the
+      rest.
+    - fixes/freetype.patch: drop, merged upstream.
+    - fixes/gpu-crash.patch: drop, merged upstream.
+    - fixes/bindgen.patch: refresh and make patch even smaller. Also some
+      upstream churn.
+    - fixes/fix-assert-in-vnc-sessions.patch: refresh.
+    - ungoogled/disable-privacy-sandbox.patch: refresh.
+    - upstream/mojo.patch: fix missing files.
+    - upstream/uint.patch: add gcc-specific build fix.
+    - bookworm/constflatset.patch: add (probably) gcc-specific workaround.
+    - fixes/lens-optional.patch: add gcc-specific build fix.
+  * Downgrade to rollup3 for devtools-frontend stuff, due to the bundled
+    rollup4 including wasm blobs. Update d/patches/system/rollup.patch to
+    point to the right place as well, and build-dep on
+    node-rollup-plugin-terser.
+  * Build against newer bundled libtiff for memory limiting protection.
+
+  [ Timothy Pearson ]
+  * d/patches/ppc64le:
+    - workarounds/HACK-debian-clang-disable-skia-musttail.patch: Drop due
+      to upstream fixes
+    - third_party/skia-vsx-instructions.patch: Refresh for upstream changes
+
+ -- Andres Salomon <dilinger@debian.org>  Wed, 08 Jan 2025 11:26:36 -0500
+
 chromium (131.0.6778.264-1~deb12u1) bookworm-security; urgency=high
 
   [ Andres Salomon ]

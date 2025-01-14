@@ -1,0 +1,35 @@
+commit 67ee7171925fb9269f9082772abe3ca603ad9341
+Author: Ivan Murashov <ivan.murashov@lge.com>
+Date:   Mon Nov 18 20:43:19 2024 +0000
+
+    IWYU: Add missing include for uint64_t usage in limited_layer_entropy_cost_tracker.h
+    
+    In the CL https://crrev.com/c/5934754 used uint64_t in the
+    components/variations/limited_layer_entropy_cost_tracker.h,
+    but required include was missed.
+    Added missing include for uint64_t usage.
+    
+    Without it build failed when libstdc++ is used:
+    ../../components/variations/limited_layer_entropy_cost_tracker.h:64:20:
+    error: 'uint64_t' does not name a type
+    
+    Bug: 41455655
+    Change-Id: Ib7eccd2ce36dc3af92dad1195ba2d7eaceeb983e
+    Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6028950
+    Reviewed-by: Sylvain Defresne <sdefresne@chromium.org>
+    Reviewed-by: Ted Choc <tedchoc@chromium.org>
+    Commit-Queue: Ivan Murashov <ivan.murashov@lge.com>
+    Cr-Commit-Position: refs/heads/main@{#1384542}
+
+diff --git a/components/variations/limited_layer_entropy_cost_tracker.h b/components/variations/limited_layer_entropy_cost_tracker.h
+index e15e033c1d5a6..36ba7e0a121c1 100644
+--- a/components/variations/limited_layer_entropy_cost_tracker.h
++++ b/components/variations/limited_layer_entropy_cost_tracker.h
+@@ -5,6 +5,7 @@
+ #ifndef COMPONENTS_VARIATIONS_LIMITED_LAYER_ENTROPY_COST_TRACKER_H_
+ #define COMPONENTS_VARIATIONS_LIMITED_LAYER_ENTROPY_COST_TRACKER_H_
+ 
++#include <cstdint>
+ #include <map>
+ #include <set>
+ 

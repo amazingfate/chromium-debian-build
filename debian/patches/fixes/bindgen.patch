@@ -19,32 +19,30 @@ fix should probably go upstream.
 
 --- a/third_party/crabbyavif/BUILD.gn
 +++ b/third_party/crabbyavif/BUILD.gn
-@@ -9,7 +9,10 @@ rust_bindgen("crabbyavif_dav1d_bindings"
-   header = "src/sys/dav1d-sys/wrapper.h"
-   deps = [ "//third_party/dav1d:dav1d_headers" ]
-   configs = [ "//third_party/dav1d:dav1d_config" ]
--  bindgen_flags = [
-+  bindgen_flags = ["no-doc-comments", "generate=functions,types,vars,methods,constructors,destructors",]
+@@ -13,6 +13,10 @@ rust_bindgen_generator("crabbyavif_dav1d
+   bindgen_flags = [
+     "no-doc-comments",
+     "generate=functions,types,vars,methods,constructors,destructors",
++  ]
 +  junk = []
 +  not_needed(["junk"])
 +  junk = [
-     "no-doc-comments",
-     "generate=functions,types,vars,methods,constructors,destructors",
      "allowlist-item=dav1d_close",
-@@ -45,7 +48,10 @@ rust_static_library("crabbyavif_dav1d_sy
- rust_bindgen("crabbyavif_libyuv_bindings") {
-   header = "src/sys/libyuv-sys/wrapper.h"
-   configs = [ "//third_party/libyuv:libyuv_config" ]
--  bindgen_flags = [
-+  bindgen_flags = ["no-doc-comments", "generate=functions,types,vars,methods,constructors,destructors",]
+     "allowlist-item=dav1d_data_unref",
+     "allowlist-item=dav1d_data_wrap",
+@@ -42,6 +46,10 @@ rust_bindgen_generator("crabbyavif_libyu
+   bindgen_flags = [
+     "no-doc-comments",
+     "generate=functions,types,vars,methods,constructors,destructors",
++  ]
 +  junk = []
 +  not_needed(["junk"])
 +  junk = [
-     "no-doc-comments",
-     "generate=functions,types,vars,methods,constructors,destructors",
      "allowlist-item=AR30ToAB30",
---- a/build/rust/rust_bindgen.gni
-+++ b/build/rust/rust_bindgen.gni
+     "allowlist-item=ARGBToABGR",
+     "allowlist-item=ARGBAttenuate",
+--- a/build/rust/rust_bindgen_generator.gni
++++ b/build/rust/rust_bindgen_generator.gni
 @@ -18,7 +18,7 @@ if (host_os == "win") {
  
  # On Windows, the libclang.dll is beside the bindgen.exe, otherwise it is in

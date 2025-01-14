@@ -15,24 +15,21 @@ fixes/bindgen.patch
 fixes/memory-allocator-dcheck-assert-fix.patch
 fixes/clang-rust-target.patch
 fixes/highway-include-path.patch
-fixes/gpu-crash.patch
 fixes/predictor-denial-of-service.patch
 fixes/fix-assert-in-vnc-sessions.patch
 fixes/armhf-timespec.patch
-fixes/freetype.patch
 fixes/updater-test.patch
 fixes/absl-optional.patch
 fixes/font-gc-asan.patch
+fixes/lens-optional.patch
 
 upstream/mojo.patch
 upstream/ruy-include.patch
-upstream/blink-fix-size-assertions.patch
-upstream/dawn-strlen.patch
 upstream/ink-isfinite.patch
 upstream/webrtc-optional.patch
 upstream/variant.patch
 upstream/array.patch
-upstream/mrc-copy-op.patch
+upstream/uint.patch
 
 disable/tests.patch
 disable/tests-swiftshader.patch
@@ -56,6 +53,7 @@ system/eu-strip.patch
 system/rapidjson.patch
 system/rollup.patch
 
+bookworm/constflatset.patch
 bookworm/libxml-parseerr.patch
 bookworm/freetype-COLRV1.patch
 bookworm/gn-funcs.patch
@@ -104,7 +102,6 @@ ppc64le/webrtc/Rtc_base-system-arch.h-PPC.patch
 ppc64le/third_party/0004-third_party-crashpad-port-curl-transport-ppc64.patch
 
 ppc64le/workarounds/HACK-third_party-libvpx-use-generic-gnu.patch
-ppc64le/workarounds/HACK-debian-clang-disable-skia-musttail.patch
 ppc64le/workarounds/HACK-debian-clang-disable-base-musttail.patch
 ppc64le/workarounds/HACK-debian-clang-disable-pa-musttail.patch
 
