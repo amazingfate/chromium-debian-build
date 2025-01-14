@@ -19,6 +19,7 @@ chromium (132.0.6834.83-1~deb12u1) UNRELEASED; urgency=high
     - fixes/lens-optional.patch: add gcc-specific build fix.
     - bookworm/gn-absl.patch: modify for new dependency.
     - bookworm/rust-visibility.patch: add build fix for older rustc.
+    - bookworm/less-void.patch: add build fix for older libstdc++/gcc.
   * Downgrade to rollup3 for devtools-frontend stuff, due to the bundled
     rollup4 including wasm blobs. Update d/patches/system/rollup.patch to
     point to the right place as well, and build-dep on
