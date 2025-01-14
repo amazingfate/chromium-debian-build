@@ -63,6 +63,7 @@ bookworm/partially-deployed-mseal-syscall.patch
 bookworm/constexpr.patch
 bookworm/constexpr2.patch
 bookworm/bubble-contents.patch
+bookworm/rust-visibility.patch
 
 # Ungoogled Chromium
 ungoogled/disable-privacy-sandbox.patch
