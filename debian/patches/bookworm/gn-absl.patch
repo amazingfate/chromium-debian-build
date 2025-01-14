@@ -206,3 +206,13 @@ libs.
    deps = [
      ":commandlineflag",
      ":commandlineflag_internal",
+--- a/third_party/abseil-cpp/absl/types/BUILD.gn
++++ b/third_party/abseil-cpp/absl/types/BUILD.gn
+@@ -38,6 +38,7 @@ absl_source_set("bad_any_cast_impl") {
+ absl_source_set("span") {
+   public = [ "span.h" ]
+   sources = [ "internal/span.h" ]
++  visibility = [ "*" ]
+   deps = [
+     "//third_party/abseil-cpp/absl/algorithm",
+     "//third_party/abseil-cpp/absl/base:config",
