@@ -111,7 +111,6 @@ Files-Excluded:
  third_party/libei
  third_party/webgl
  third_party/libpng
- third_party/libdrm
  third_party/libevent
  third_party/libsecret
  third_party/libxslt

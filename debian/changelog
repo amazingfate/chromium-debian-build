@@ -1,6 +1,31 @@
-chromium (132.0.6834.83-1~deb12u1) UNRELEASED; urgency=high
+chromium (132.0.6834.83-1~deb12u1) bookworm-security; urgency=high
 
+  [ Andres Salomon ]
   * New upstream stable release.
+    - CVE-2025-0434: Out of bounds memory access in V8. Reported by ddme.
+    - CVE-2025-0435: Inappropriate implementation in Navigation.
+      Reported by Alesandro Ortiz.
+    - CVE-2025-0436: Integer overflow in Skia.
+      Reported by Han Zheng (HexHive).
+    - CVE-2025-0437: Out of bounds read in Metrics.
+      Reported by Xiantong Hou of Wuheng Lab and Pisanbao.
+    - CVE-2025-0438: Stack buffer overflow in Tracing.
+      Reported by Han Zheng (HexHive).
+    - CVE-2025-0439: Race in Frames. Reported by Hafiizh.
+    - CVE-2025-0440: Inappropriate implementation in Fullscreen.
+      Reported by Umar Farooq.
+    - CVE-2025-0441: Inappropriate implementation in Fenced Frames.
+      Reported by someoneverycurious.
+    - CVE-2025-0442: Inappropriate implementation in Payments.
+      Reported by Ahmed ElMasry.
+    - CVE-2025-0443: Insufficient data validation in Extensions.
+      Reported by Anonymous.
+    - CVE-2025-0446: Inappropriate implementation in Extensions.
+      Reported by Hafiizh.
+    - CVE-2025-0447: Inappropriate implementation in Navigation.
+      Reported by Khiem Tran (@duckhiem).
+    - CVE-2025-0448: Inappropriate implementation in Compositing.
+      Reported by Dahyeon Park.
   * d/patches:
     - upstream/blink-fix-size-assertions.patch: drop, merged upstream.
     - upstream/dawn-strlen.patch: drop, merged upstream.
@@ -25,6 +50,7 @@ chromium (132.0.6834.83-1~deb12u1) UNRELEASED; urgency=high
     point to the right place as well, and build-dep on
     node-rollup-plugin-terser.
   * Build against newer bundled libtiff for memory limiting protection.
+  * Switch to bundled libdrm due to DRM_IOCTL_SYNCOBJ_EVENTFD usage.
 
   [ Timothy Pearson ]
   * d/patches/ppc64le:
@@ -32,7 +58,7 @@ chromium (132.0.6834.83-1~deb12u1) UNRELEASED; urgency=high
       to upstream fixes
     - third_party/skia-vsx-instructions.patch: Refresh for upstream changes
 
- -- Andres Salomon <dilinger@debian.org>  Wed, 08 Jan 2025 11:26:36 -0500
+ -- Andres Salomon <dilinger@debian.org>  Tue, 14 Jan 2025 21:20:43 -0500
 
 chromium (131.0.6778.264-1~deb12u1) bookworm-security; urgency=high
 
