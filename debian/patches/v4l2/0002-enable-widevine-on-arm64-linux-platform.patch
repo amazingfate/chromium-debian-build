@@ -1,0 +1,26 @@
+From 99ef0a9b3174bc22c6f6a917cc08c74ce58f3211 Mon Sep 17 00:00:00 2001
+From: Jianfeng Liu <liujianfeng1994@gmail.com>
+Forwarded: not-needed
+Date: Thu, 18 Jul 2024 11:10:21 +0800
+Subject: [PATCH 2/4] enable widevine on arm64 linux platform
+
+---
+ third_party/widevine/cdm/widevine.gni | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/third_party/widevine/cdm/widevine.gni b/third_party/widevine/cdm/widevine.gni
+index 8b97b7a574..659ed0f476 100644
+--- a/third_party/widevine/cdm/widevine.gni
++++ b/third_party/widevine/cdm/widevine.gni
+@@ -27,7 +27,7 @@ if (is_chromeos && !is_chromeos_device) {
+ library_widevine_cdm_available =
+     (is_chromeos &&
+      (target_cpu == "x64" || target_cpu == "arm" || target_cpu == "arm64")) ||
+-    (target_os == "linux" && target_cpu == "x64") ||
++    (target_os == "linux" && (target_cpu == "x64" || target_cpu == "arm64")) ||
+     (target_os == "mac" && (target_cpu == "x64" || target_cpu == "arm64")) ||
+     (target_os == "win" &&
+      (target_cpu == "x86" || target_cpu == "x64" || target_cpu == "arm64"))
+-- 
+2.43.0
+

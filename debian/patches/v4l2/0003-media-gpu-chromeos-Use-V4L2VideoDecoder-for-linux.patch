@@ -1,0 +1,30 @@
+From 107d2f9d73535b67ac00483ad5cb9c8c5f289183 Mon Sep 17 00:00:00 2001
+From: Jianfeng Liu <liujianfeng1994@gmail.com>
+Forwarded: https://chromium-review.googlesource.com/c/chromium/src/+/6059495
+Date: Fri, 29 Nov 2024 17:03:52 +0800
+Subject: [PATCH 3/4] media/gpu/chromeos: Use V4L2VideoDecoder for linux
+
+---
+ media/gpu/chromeos/video_decoder_pipeline.cc | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/media/gpu/chromeos/video_decoder_pipeline.cc b/media/gpu/chromeos/video_decoder_pipeline.cc
+index 23d3d7e17c..dcffe7105b 100644
+--- a/media/gpu/chromeos/video_decoder_pipeline.cc
++++ b/media/gpu/chromeos/video_decoder_pipeline.cc
+@@ -232,8 +232,12 @@ std::unique_ptr<VideoDecoder> VideoDecoderPipeline::Create(
+     create_decoder_function_cb = base::BindOnce(&VaapiVideoDecoder::Create);
+ #elif BUILDFLAG(USE_V4L2_CODEC)
+     if (IsV4L2DecoderStateful()) {
++#if BUILDFLAG(IS_LINUX)
++      create_decoder_function_cb = base::BindOnce(&V4L2VideoDecoder::Create);
++#else
+       create_decoder_function_cb =
+           base::BindOnce(&V4L2StatefulVideoDecoder::Create);
++#endif
+     } else {
+       create_decoder_function_cb = base::BindOnce(&V4L2VideoDecoder::Create);
+     }
+-- 
+2.43.0
+
