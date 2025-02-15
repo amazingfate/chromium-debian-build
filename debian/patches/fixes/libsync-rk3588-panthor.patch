@@ -7,20 +7,46 @@ ozone wayland. There is a bug reported upstream:
 
 https://issues.chromium.org/issues/343592370
 
-I find the fix from an upstream commit:
-
-https://chromium.googlesource.com/aosp/platform/system/core/libsync/+/941fe299d072723ddd475c173fe122a4f97b8cdf%5E%21/
+The hard-coded malloc of legacy_info 4096 sometimes cause crash, so I add
+reallocation of legacy_info after we have known num_fences.
 
 diff --git a/third_party/libsync/src/sync.c b/third_party/libsync/src/sync.c
-index 9ed03dba88..0e9ad43822 100644
+index 9ed03dba88..8195b00737 100644
 --- a/third_party/libsync/src/sync.c
 +++ b/third_party/libsync/src/sync.c
-@@ -145,7 +145,7 @@ struct sync_fence_info_data *sync_fence_info(int fd)
+@@ -144,19 +144,30 @@ struct sync_fence_info_data *sync_fence_info(int fd)
+         }
      }
  
-     legacy_info->len = sizeof(*legacy_info) +
+-    legacy_info->len = sizeof(*legacy_info) +
 -                        num_fences * sizeof(struct sync_fence_info);
-+                        num_fences * sizeof(struct sync_pt_info);
++    // Now we know num_fences, so reallocate legacy_info
++    size_t new_size = sizeof(*legacy_info) +
++                       num_fences * sizeof(struct sync_pt_info);
++    struct sync_fence_info_data *new_legacy_info = realloc(legacy_info, new_size);
++    if (!new_legacy_info) {
++        free((void *)info->sync_fence_info);
++        goto free;
++    }
++
++    legacy_info = new_legacy_info;
++    legacy_info->len = new_size;
++
      strlcpy(legacy_info->name, info->name, sizeof(legacy_info->name));
      legacy_info->status = info->status;
  
+-    legacy_pt_info = (struct sync_pt_info *)legacy_info->pt_info;
++    legacy_pt_info = (struct sync_pt_info *)(legacy_info + 1);
+     fence_info = (struct sync_fence_info *)info->sync_fence_info;
++
+     for (i = 0 ; i < num_fences ; i++) {
+         legacy_pt_info[i].len = sizeof(*legacy_pt_info);
+         strlcpy(legacy_pt_info[i].obj_name, fence_info[i].obj_name,
+-                sizeof(legacy_pt_info->obj_name));
++                sizeof(legacy_pt_info[i].obj_name));
+         strlcpy(legacy_pt_info[i].driver_name, fence_info[i].driver_name,
+-                sizeof(legacy_pt_info->driver_name));
++                sizeof(legacy_pt_info[i].driver_name));
+         legacy_pt_info[i].status = fence_info[i].status;
+         legacy_pt_info[i].timestamp_ns = fence_info[i].timestamp_ns;
+     }
